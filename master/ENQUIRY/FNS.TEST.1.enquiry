@@ -1,0 +1,295 @@
+Enquiry "FNS.TEST.1" for "name:/EB_Foundation:NOFILE.TEST.DS#" {
+    metamodelVersion: "1.30.6"
+    description {
+        en = "Enquiry for Nominative Financing", id = "Inquiry Nominatif Pembiayaan"
+    }
+
+    zero-records-display: true
+    start-line: 15
+    end-line: 99 fixed-selection "R.RECORD" {
+        NotEquals "\"\""
+    }
+
+    custom-selection {
+
+        field "ARRANGEMENT.ID" {
+            label {
+                en = "Arrangement ID"
+            }
+
+        }
+
+        AND
+
+        field "PRODUCT" {
+            label {
+                en = "Prod Type", id = "Tipe Produk"
+            }
+
+        }
+
+        AND
+
+        field "VALUE.DATE" {
+            label {
+                en = "Value Date", id = "Tanggal Valuta"
+            }
+
+        }
+
+        AND
+
+        field "MATURITY.DATE" {
+            label {
+                en = "Fin Mat Date", id = "Tanggal Jatuh Tempo"
+            }
+
+        }
+
+        AND
+
+        field "CATEGORY" {
+            mandatory: true
+            label {
+                en = "Category", id = "Kategori"
+            }
+
+        }
+
+        None
+    }
+
+    field "HEAD.0" {
+        display-type: "CLASS-ENQ.H.DATA.LABEL"
+        comma-separator: false
+        display-section: Header
+        position {
+            column: 1
+            line: 0
+        }
+
+        operation: constant "\"Bank BTPN Syariah\""
+    }
+
+    field "LANG" {
+        comma-separator: false
+        operation: language
+    }
+
+    field "HDR1" {
+        comma-separator: false
+        operation: constant "\"Enquiry for Nominative Financing\""
+    }
+
+    field "HDR2" {
+        comma-separator: false
+        operation: constant "\"Inquiry Nominatif Pembiayaan\""
+    }
+
+    field "HEAD.1" {
+        display-type: "CLASS-ENQ.H.DATA.LABEL"
+        comma-separator: false
+        display-section: Header
+        position {
+            column: 1
+            line: 1
+        }
+
+        operation: if "LANG" Equals "1" process "HDR1" "HDR2"
+    }
+
+    field "DOT" {
+        comma-separator: false
+        operation: constant "\":\""
+    }
+
+    field "SPACE" {
+        comma-separator: false
+        operation: constant "\" \""
+    }
+
+    field "USER" {
+        comma-separator: false
+        operation: user
+        conversion: getFrom "USER" "USER.NAME" false
+    }
+
+    field "USER1" {
+        comma-separator: false
+        operation: constant "\"Access User\""
+    }
+
+    field "USER2" {
+        comma-separator: false
+        operation: constant "\"User Akses\""
+    }
+
+    field "USER.TITLE" {
+        comma-separator: false
+        operation: if "LANG" Equals "1" process "USER1" "USER2"
+    }
+
+    field "USER.DISP" {
+        display-type: "CLASS-ENQ.H.DATA.LABEL"
+        comma-separator: false
+        display-section: Header
+        position {
+            column: 1
+            line: 2
+        }
+
+        operation: calc "USER.TITLE":"SPACE":"DOT":"SPACE":"USER"
+    }
+
+    field "DT" {
+        comma-separator: false
+        operation: today
+        conversion: extract from 7 to 2
+    }
+
+    field "MT" {
+        comma-separator: false
+        operation: today
+        conversion: extract from 5 to 2
+    }
+
+    field "YR" {
+        comma-separator: false
+        operation: today
+        conversion: extract from 1 to 4
+    }
+
+    field "DATE" {
+        comma-separator: false
+        operation: calc "DT":"\"-\"":"MT":"\"-\"":"YR"
+    }
+
+    field "TIME" {
+        comma-separator: false
+        operation: constant "\"\""
+        conversion: call
+        jBC: "@ E.MB.TIME"
+        conversion: extract from 1 to 8
+    }
+
+    field "DATE1" {
+        comma-separator: false
+        operation: constant "\"Access Date / Time\""
+    }
+
+    field "DATE2" {
+        comma-separator: false
+        operation: constant "\"Tanggal / Waktu Akses\""
+    }
+
+    field "DATE.TITLE" {
+        comma-separator: false
+        operation: if "LANG" Equals "1" process "DATE1" "DATE2"
+    }
+
+    field "DATE.TITLE2" {
+        comma-separator: false
+        operation: calc "DATE":"SPACE":"\"/\"":"SPACE":"TIME"
+    }
+
+    field "DATE.DISP" {
+        display-type: "CLASS-ENQ.H.DATA.LABEL"
+        comma-separator: false
+        display-section: Header
+        position {
+            column: 1
+            line: 3
+        }
+
+        operation: calc "DATE.TITLE":"SPACE":"DOT":"SPACE":"DATE.TITLE2"
+    }
+
+    field "COM.ID" {
+        comma-separator: false
+        operation: company
+    }
+
+    field "COM.NAME" {
+        comma-separator: false
+        operation: field-extract "COM.ID"
+        conversion: getFrom "COMPANY" "COMPANY.NAME" false
+    }
+
+    field "COMTITLE1" {
+        comma-separator: false
+        operation: constant "\"Access Branch\""
+    }
+
+    field "COMTITLE2" {
+        comma-separator: false
+        operation: constant "\"Cabang Akses\""
+    }
+
+    field "COM.TITLE" {
+        comma-separator: false
+        operation: if "LANG" Equals "1" process "COMTITLE1" "COMTITLE2"
+    }
+
+    field "COM.TITLE2" {
+        comma-separator: false
+        operation: calc "COM.ID":"SPACE":"\"/\"":"SPACE":"COM.NAME"
+    }
+
+    field "COM.DISP" {
+        display-type: "CLASS-ENQ.H.DATA.LABEL"
+        comma-separator: false
+        display-section: Header
+        position {
+            column: 1
+            line: 4
+        }
+
+        operation: calc "COM.TITLE":"SPACE":"DOT":"SPACE":"COM.TITLE2"
+    }
+
+    field "@ID" {
+        length: 500
+        alignment: Left
+        comma-separator: false
+        processing-mode: Single
+        operation: application-field-name "@ID"
+    }
+
+    field "ZERO.1" {
+        comma-separator: false
+        operation: constant "\"No Data Record\""
+    }
+
+    field "ZERO.2" {
+        comma-separator: false
+        operation: constant "\"Tidak Ada Data\""
+    }
+
+    field "ZERO" {
+        display-type: "CLASS-ENQ.NORECS" break-condition {
+            break: None
+        }
+
+        comma-separator: false
+        position {
+            column: 1
+        }
+
+        operation: if "LANG" Equals "1" process "ZERO.1" "ZERO.2"
+    }
+
+    drilldown "1" {
+        description {
+            en = "NEXT"
+        }
+
+        label-field: "@ID" parameters {
+            function:  Input
+            field: "@ID"
+        }
+
+        screen: "FUNDS.TRANSFER,FNS.TEST.1"
+    }
+
+    attributes: "DISABLE.NO.SORT.OPTIONS"
+}
