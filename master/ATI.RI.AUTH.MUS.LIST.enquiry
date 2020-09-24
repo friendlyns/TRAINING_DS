@@ -1,0 +1,369 @@
+Enquiry "ATI.RI.AUTH.MUS.LIST" for "name:/EB_Foundation:EB.ID.NDC.MUS.DET$NAU#" {
+    metamodelVersion: "1.30.6"
+    description {
+        en = "Musyarakah Profit Sharing Report", id = "Otorisasi Lapor Bagi Hasil Musyarak"
+    }
+
+    zero-records-display: true
+    no-selection: true
+    start-line: 5
+    end-line: 19 fixed-selection "RECORD.STATUS" {
+        NotEquals "IHLD"
+    }
+
+    custom-selection {
+
+        field "@ID" {
+            label {
+                en = "Transaction ID", id = "Nomor Kontrak"
+            }
+
+            operands: Equals
+        }
+
+        None
+    }
+
+    field "Y.STR" {
+        length: 500
+        alignment: Left
+        comma-separator: false
+        processing-mode: Single
+        operation: application-field-name "@ID"
+    }
+
+    field "HEAD0" {
+        display-type: "CLASS-ENQ.H.TITLE"
+        comma-separator: false
+        display-section: Header
+        position {
+            column: 1
+            line: 0
+        }
+
+        operation: constant "\"PT BTPNS\""
+    }
+
+    field "LANG" {
+        comma-separator: false
+        operation: language
+    }
+
+    field "HDR1" {
+        comma-separator: false
+        operation: constant "\"Unauthorised Musyarakah Profit Sharing Report\""
+    }
+
+    field "HDR2" {
+        comma-separator: false
+        operation: constant "\"Lapor Bagi Hasil Musyarakah Belum Diotorisasi\""
+    }
+
+    field "HEAD1" {
+        display-type: "CLASS-ENQ.H.TITLE"
+        comma-separator: false
+        display-section: Header
+        position {
+            column: 1
+            line: 1
+        }
+
+        operation: if "LANG" Equals "1" process "HDR1" "HDR2"
+    }
+
+    field "DOT" {
+        comma-separator: false
+        operation: constant "\":\""
+    }
+
+    field "SPACE" {
+        comma-separator: false
+        operation: constant "\" \""
+    }
+
+    field "USER" {
+        comma-separator: false
+        operation: user
+        conversion: getFrom "USER" "USER.NAME" false
+    }
+
+    field "USER1" {
+        comma-separator: false
+        operation: constant "\"Access User\""
+    }
+
+    field "USER2" {
+        comma-separator: false
+        operation: constant "\"User Akses\""
+    }
+
+    field "USER.TITLE" {
+        comma-separator: false
+        operation: if "LANG" Equals "1" process "USER1" "USER2"
+    }
+
+    field "USER.DISP" {
+        display-type: "CLASS-ENQ.H.DATA.LABEL"
+        comma-separator: false
+        display-section: Header
+        position {
+            column: 1
+            line: 2
+        }
+
+        operation: calc "USER.TITLE":"SPACE":"DOT":"SPACE":"USER"
+    }
+
+    field "DT" {
+        comma-separator: false
+        operation: today
+        conversion: extract from 7 to 2
+    }
+
+    field "MT" {
+        comma-separator: false
+        operation: today
+        conversion: extract from 5 to 2
+    }
+
+    field "YR" {
+        comma-separator: false
+        operation: today
+        conversion: extract from 1 to 4
+    }
+
+    field "DATE" {
+        format: Date
+        comma-separator: false
+        operation: calc "DT":"\"-\"":"MT":"\"-\"":"YR"
+    }
+
+    field "TIME" {
+        comma-separator: false
+        operation: constant "\"\""
+        conversion: call
+        jBC: "@ E.MB.TIME"
+        conversion: extract from 1 to 8
+    }
+
+    field "DATE1" {
+        comma-separator: false
+        operation: constant "\"Access Date / Time\""
+    }
+
+    field "DATE2" {
+        comma-separator: false
+        operation: constant "\"Tanggal / Waktu Akses\""
+    }
+
+    field "DATE.TITLE" {
+        comma-separator: false
+        operation: if "LANG" Equals "1" process "DATE1" "DATE2"
+    }
+
+    field "DATE.TITLE2" {
+        comma-separator: false
+        operation: calc "DOT":"SPACE":"DATE":"SPACE":"\"/\"":"SPACE":"TIME"
+    }
+
+    field "DATE.DISP" {
+        display-type: "CLASS-ENQ.H.DATA.LABEL"
+        comma-separator: false
+        display-section: Header
+        position {
+            column: 1
+            line: 3
+        }
+
+        operation: calc "DATE.TITLE":"SPACE":"DOT":"SPACE":"DATE.TITLE2"
+    }
+
+    field "COM.ID" {
+        comma-separator: false
+        operation: company
+    }
+
+    field "COM.NAME" {
+        comma-separator: false
+        operation: field-extract "COM.ID"
+        conversion: getFrom "COMPANY" "COMPANY.NAME" false
+    }
+
+    field "COMTITLE1" {
+        comma-separator: false
+        operation: constant "\"Access Branch\""
+    }
+
+    field "COMTITLE2" {
+        comma-separator: false
+        operation: constant "\"Cabang Akses\""
+    }
+
+    field "COM.TITLE" {
+        comma-separator: false
+        operation: if "LANG" Equals "1" process "COMTITLE1" "COMTITLE2"
+    }
+
+    field "COM.TITLE2" {
+        comma-separator: false
+        operation: calc "COM.ID":"SPACE":"\"/\"":"SPACE":"COM.NAME"
+    }
+
+    field "COM.DISP" {
+        display-type: "CLASS-ENQ.H.DATA.LABEL"
+        comma-separator: false
+        display-section: Header
+        position {
+            column: 1
+            line: 4
+        }
+
+        operation: calc "COM.TITLE":"SPACE":"DOT":"SPACE":"COM.TITLE2"
+    }
+
+    field "ID" {
+        label {
+            en = "Report Number", id = "No Pelaporan"
+        }
+
+        length: 25
+        alignment: Left
+        comma-separator: false
+        position {
+            column: 1
+        }
+
+        processing-mode: Single
+        operation: application-field-name "@ID"
+    }
+
+    field "ARR.ID" {
+        label {
+            en = "LD Number", id = "No Pembiayaan"
+        }
+
+        length: 15
+        alignment: Left
+        comma-separator: false
+        position {
+            column: 2
+        }
+
+        processing-mode: Single
+        operation: application-field-name "@ID"
+    }
+
+    field "SCHD.DATE" {
+        label {
+            en = "Schedule Date", id = "Tanggal Penjadwalan"
+        }
+
+        length: 15
+        alignment: Right
+        comma-separator: false
+        position {
+            column: 3
+        }
+
+        processing-mode: Multi
+        operation: application-field-name "PRJ.PAY.DT"
+    }
+
+    field "ACCT.NO" {
+        label {
+            en = "Debit Account", id = "Rekening Debit"
+        }
+
+        length: 25
+        alignment: Left
+        comma-separator: false
+        position {
+            column: 4
+        }
+
+        processing-mode: Single
+        operation: application-field-name "@ID"
+        conversion: call
+        jBC: "@ ATI.CONV.SETT.PAYINACCOUNT"
+    }
+
+    field "PRJ.MRG" {
+        label {
+            en = "Project Margin", id = "Proyeksi"
+        }
+
+        length: 35
+        alignment: Right
+        comma-separator: false
+        position {
+            column: 5
+        }
+
+        processing-mode: Multi
+        operation: application-field-name "PRJ.PFT.INS"
+    }
+
+    field "REAL.MRG" {
+        label {
+            en = "Real Margin", id = "Realisasi"
+        }
+
+        length: 35
+        alignment: Right
+        comma-separator: false
+        position {
+            column: 6
+        }
+
+        processing-mode: Multi
+        operation: application-field-name "RLZ.INST.AMT"
+    }
+
+    field "INPUTTER" {
+        label {
+            en = "Inputter", id = "Operator"
+        }
+
+        length: 40
+        alignment: Left
+        comma-separator: false
+        position {
+            column: 7
+        }
+
+        processing-mode: Multi
+        operation: application-field-name "INPUTTER"
+        conversion: extract from 2 to 0 delimited by "_"
+    }
+
+    field "Y.NULL" {
+        comma-separator: false
+        operation: constant "\"\""
+    }
+
+    field "Y.S" {
+        comma-separator: false
+        operation: constant "\" \""
+    }
+
+    field "ZERO1" {
+        comma-separator: false
+        operation: constant "\"No Record Found\""
+    }
+
+    field "ZERO2" {
+        comma-separator: false
+        operation: constant "\"Tidak Ada Data\""
+    }
+
+    field "ZERORECORD" {
+        display-type: "CLASS-ENQ.NORECS" break-condition {
+            break: None
+        }
+
+        comma-separator: false
+        operation: if "LANG" Equals "1" process "ZERO1" "ZERO2"
+    }
+
+    attributes: "DISABLE.NO.SORT.OPTIONS" ; "NO.ENQUIRY.FAVOURITES"
+}
